@@ -12,6 +12,12 @@ body {
   color: #17202a;
 }
 
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
 button,
 input,
 select,

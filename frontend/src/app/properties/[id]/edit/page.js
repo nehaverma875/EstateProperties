@@ -31,12 +31,12 @@ export default function EditPropertyPage() {
 
   if (!hydrated || isLoading) {
     // Wait for auth hydration and property fetch.
-    return <section className="mx-auto max-w-4xl px-4 py-12 text-ink/60">Loading...</section>;
+    return <section className="mx-auto h-full max-w-4xl overflow-y-auto px-4 py-12 text-ink/60">Loading...</section>;
   }
 
   if (!token) {
     return (
-      <section className="mx-auto max-w-xl px-4 py-16 text-center">
+      <section className="mx-auto h-full max-w-xl overflow-y-auto px-4 py-16 text-center">
         <h1 className="text-2xl font-bold">Login to edit this listing</h1>
         <Link href="/login" className="btn-primary mt-4">Login</Link>
       </section>
@@ -44,12 +44,12 @@ export default function EditPropertyPage() {
   }
 
   if (isError || !property) {
-    return <section className="mx-auto max-w-4xl px-4 py-12 text-coral">{getApiErrorMessage(error, 'Could not load this listing.')}</section>;
+    return <section className="mx-auto h-full max-w-4xl overflow-y-auto px-4 py-12 text-coral">{getApiErrorMessage(error, 'Could not load this listing.')}</section>;
   }
 
   if (!isOwner) {
     return (
-      <section className="mx-auto max-w-xl px-4 py-16 text-center">
+      <section className="mx-auto h-full max-w-xl overflow-y-auto px-4 py-16 text-center">
         <h1 className="text-2xl font-bold">You cannot edit this listing</h1>
         <Link href={`/properties/${id}`} className="btn-ghost mt-4">Back to listing</Link>
       </section>
@@ -57,8 +57,8 @@ export default function EditPropertyPage() {
   }
 
   return (
-    <section className="mx-auto max-w-4xl px-4 py-8">
-      <h1 className="mb-5 text-3xl font-bold">Edit property listing</h1>
+    <section className="mx-auto h-full max-w-4xl overflow-y-auto px-4 py-8">
+      <h1 className="mb-5 text-2xl font-bold sm:text-3xl">Edit property listing</h1>
       <PropertyForm initialProperty={property} onSubmit={submit} loading={updateState.isLoading} />
       {updateState.error && <p className="mt-3 text-sm text-coral">{getApiErrorMessage(updateState.error, 'Could not update listing')}</p>}
     </section>

@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
       <body suppressHydrationWarning>
         <Providers>
           <Header />
-          <main>{children}</main>
+          <main className="h-[calc(100dvh-4rem)] overflow-hidden">{children}</main>
         </Providers>
       </body>
     </html>

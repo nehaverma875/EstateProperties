@@ -47,7 +47,7 @@ export default function LoginPage() {
   }
 
   return (
-    <section className="mx-auto grid min-h-[calc(100vh-72px)] max-w-md content-center px-4 py-10">
+    <section className="mx-auto grid h-full max-w-md content-center overflow-y-auto px-4 py-10">
       <form onSubmit={handleSubmit(submit)} className="grid gap-4 rounded-md border border-line bg-white p-6 shadow-soft">
         <div>
           <h1 className="text-2xl font-bold">{mode === 'login' ? 'Login' : 'Create account'}</h1>

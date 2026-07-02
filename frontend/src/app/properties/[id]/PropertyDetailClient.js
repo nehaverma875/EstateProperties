@@ -60,7 +60,7 @@ export default function PropertyDetailClient({ property }) {
   }
 
   return (
-    <aside className="h-fit rounded-md border border-line bg-white p-5 shadow-soft">
+    <aside className="h-fit rounded-md border border-line bg-white p-4 shadow-soft sm:p-5 lg:sticky lg:top-4">
       <h2 className="text-xl font-bold">{canManage ? 'Manage listing' : 'Contact owner'}</h2>
       <p className="mt-1 text-sm text-ink/60">{property.ownerName}</p>
       <div className="mt-4 grid gap-2 text-sm">

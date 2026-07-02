@@ -33,12 +33,12 @@ export default function AdminPropertiesPage() {
 
   if (!hydrated) {
     // Wait until localStorage auth is loaded on the client.
-    return <section className="mx-auto max-w-6xl px-4 py-10 text-ink/60">Loading...</section>;
+    return <section className="mx-auto h-full max-w-6xl overflow-y-auto px-4 py-10 text-ink/60">Loading...</section>;
   }
 
   if (!token || !isAdmin) {
     return (
-      <section className="mx-auto max-w-xl px-4 py-16 text-center">
+      <section className="mx-auto h-full max-w-xl overflow-y-auto px-4 py-16 text-center">
         <div className="mx-auto grid size-12 place-items-center rounded-md bg-coral/10 text-coral"><Shield size={24} /></div>
         <h1 className="mt-5 text-2xl font-bold">Admin access required</h1>
         <Link href="/" className="btn-ghost mt-4">Back to listings</Link>
@@ -47,36 +47,38 @@ export default function AdminPropertiesPage() {
   }
 
   return (
-    <section className="mx-auto max-w-6xl px-4 py-8">
-      <div className="mb-5">
-        <h1 className="text-3xl font-bold">Admin properties</h1>
+    <section className="mx-auto flex h-full max-w-6xl flex-col px-3 sm:px-4">
+      <div className="shrink-0 border-b border-line py-4 sm:py-6">
+        <h1 className="text-2xl font-bold sm:text-3xl">Admin properties</h1>
         <p className="mt-1 text-sm text-ink/60">ADMIN can delete any property. USER can only delete their own property.</p>
       </div>
 
-      {isLoading && <p className="rounded-md border border-line bg-white p-5 text-ink/60">Loading properties...</p>}
-      {isError && <p className="rounded-md border border-coral/40 bg-coral/10 p-5 text-coral">{getApiErrorMessage(error, 'Could not load admin properties.')}</p>}
-      {deleteState.isError && <p className="rounded-md border border-coral/40 bg-coral/10 p-5 text-coral">{getApiErrorMessage(deleteState.error, 'Could not delete property.')}</p>}
+      <div className="min-h-0 flex-1 overflow-y-auto py-4 pr-1 sm:py-5 sm:pr-2">
+        {isLoading && <p className="rounded-md border border-line bg-white p-5 text-ink/60">Loading properties...</p>}
+        {isError && <p className="rounded-md border border-coral/40 bg-coral/10 p-5 text-coral">{getApiErrorMessage(error, 'Could not load admin properties.')}</p>}
+        {deleteState.isError && <p className="mb-4 rounded-md border border-coral/40 bg-coral/10 p-5 text-coral">{getApiErrorMessage(deleteState.error, 'Could not delete property.')}</p>}
 
-      <div className="overflow-hidden rounded-md border border-line bg-white shadow-soft">
-        <div className="grid grid-cols-[1fr_160px_130px] gap-3 border-b border-line bg-mist px-4 py-3 text-sm font-bold text-ink/70">
-          <span>Property</span>
-          <span>Owner</span>
-          <span>Action</span>
-        </div>
-        {properties.map((property) => (
-          <div key={property.id} className="grid grid-cols-[1fr_160px_130px] gap-3 border-b border-line px-4 py-3 text-sm last:border-b-0">
-            <div>
-              <Link href={`/properties/${property.id}`} className="font-bold hover:text-leaf">{property.title}</Link>
-              <p className="mt-1 text-ink/60">{property.location}, {property.city} · {property.status}</p>
-            </div>
-            <span className="text-ink/70">{property.ownerName}</span>
-            {/* Open custom confirmation dialog instead of browser confirm(). */}
-            <button className="btn-ghost border-coral/40 text-coral hover:border-coral" onClick={() => setPropertyToDelete(property)} disabled={deleteState.isLoading || property.status !== 'active'}>
-              <Trash2 size={15} />
-              Delete
-            </button>
+        <div className="overflow-hidden rounded-md border border-line bg-white shadow-soft">
+          <div className="sticky top-0 z-10 hidden grid-cols-[1fr_160px_130px] gap-3 border-b border-line bg-mist px-4 py-3 text-sm font-bold text-ink/70 md:grid">
+            <span>Property</span>
+            <span>Owner</span>
+            <span>Action</span>
           </div>
-        ))}
+          {properties.map((property) => (
+            <div key={property.id} className="grid gap-3 border-b border-line px-4 py-3 text-sm last:border-b-0 md:grid-cols-[1fr_160px_130px]">
+              <div>
+                <Link href={`/properties/${property.id}`} className="font-bold hover:text-leaf">{property.title}</Link>
+                <p className="mt-1 text-ink/60">{property.location}, {property.city} · {property.status}</p>
+              </div>
+              <span className="text-ink/70">{property.ownerName}</span>
+              {/* Open custom confirmation dialog instead of browser confirm(). */}
+              <button className="btn-ghost w-fit border-coral/40 text-coral hover:border-coral md:w-auto" onClick={() => setPropertyToDelete(property)} disabled={deleteState.isLoading || property.status !== 'active'}>
+                <Trash2 size={15} />
+                Delete
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
       <ConfirmDialog
         open={Boolean(propertyToDelete)}

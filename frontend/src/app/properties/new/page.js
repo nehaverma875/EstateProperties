@@ -25,7 +25,7 @@ export default function NewPropertyPage() {
   if (!token) {
     // Simple route guard for users who are not logged in.
     return (
-      <section className="mx-auto max-w-xl px-4 py-16 text-center">
+      <section className="mx-auto h-full max-w-xl overflow-y-auto px-4 py-16 text-center">
         <h1 className="text-2xl font-bold">Login to list a property</h1>
         <Link href="/login" className="btn-primary mt-4">Login</Link>
       </section>
@@ -33,8 +33,8 @@ export default function NewPropertyPage() {
   }
 
   return (
-    <section className="mx-auto max-w-4xl px-4 py-8">
-      <h1 className="mb-5 text-3xl font-bold">Create property listing</h1>
+    <section className="mx-auto h-full max-w-4xl overflow-y-auto px-4 py-8">
+      <h1 className="mb-5 text-2xl font-bold sm:text-3xl">Create property listing</h1>
       <PropertyForm onSubmit={submit} loading={createState.isLoading} />
       {createState.error && <p className="mt-3 text-sm text-coral">{getApiErrorMessage(createState.error, 'Could not save listing')}</p>}
     </section>

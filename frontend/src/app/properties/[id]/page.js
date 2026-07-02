@@ -33,19 +33,19 @@ export default async function PropertyPage({ params }) {
   // Server component fetches property detail before rendering page HTML.
   const { id } = await params;
   const detail = await getDetail(id);
-  if (!detail) return <section className="mx-auto max-w-4xl px-4 py-16">Property not found.</section>;
+  if (!detail) return <section className="mx-auto h-full max-w-4xl overflow-y-auto px-4 py-16">Property not found.</section>;
   const { property, similar } = detail;
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-6">
-      <div className="grid gap-6 lg:grid-cols-[1.4fr_0.8fr]">
+    <section className="mx-auto h-full max-w-7xl overflow-y-auto px-3 py-4 sm:px-4 sm:py-6">
+      <div className="grid gap-5 lg:grid-cols-[1.4fr_0.8fr] lg:gap-6">
         <div>
           <div className="relative aspect-[16/9] overflow-hidden rounded-md border border-line bg-line">
             <Image src={imageFor(property)} alt={property.title} fill priority sizes="(max-width: 1024px) 100vw, 60vw" className="object-cover" />
           </div>
           <div className="mt-5">
             <p className="text-2xl font-bold text-leaf">{formatPrice(property.price, property.listingType)}</p>
-            <h1 className="mt-1 text-3xl font-bold">{property.title}</h1>
+            <h1 className="mt-1 text-2xl font-bold sm:text-3xl">{property.title}</h1>
             <p className="mt-2 text-ink/65">{property.location}, {property.city}</p>
             <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4">
               <Stat label="Bedrooms" value={property.bedrooms} />
