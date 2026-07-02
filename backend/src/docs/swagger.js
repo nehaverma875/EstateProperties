@@ -195,18 +195,36 @@ export const swaggerSpec = swaggerJSDoc({
         }
       },
       '/api/properties/{id}': {
-        get: { tags: ['Properties'], summary: 'Property details with similar properties', responses: { 200: { description: 'Property detail' } } },
+        get: {
+          tags: ['Properties'],
+          summary: 'Property details with similar properties',
+          parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
+          responses: { 200: { description: 'Property detail' } }
+        },
         patch: {
           tags: ['Properties'],
           security: [{ bearerAuth: [] }],
           summary: 'Edit own listing',
+          parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
           requestBody: { content: { 'application/json': { schema: { $ref: '#/components/schemas/PropertyInput' } } } },
           responses: { 200: { description: 'Updated' } }
         },
-        delete: { tags: ['Properties'], security: [{ bearerAuth: [] }], summary: 'Soft-delete own listing', responses: { 200: { description: 'Deleted' } } }
+        delete: {
+          tags: ['Properties'],
+          security: [{ bearerAuth: [] }],
+          summary: 'Soft-delete own listing',
+          parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
+          responses: { 200: { description: 'Deleted' } }
+        }
       },
       '/api/properties/{propertyId}/inquiries': {
-        post: { tags: ['Inquiries'], security: [{ bearerAuth: [] }], summary: 'Contact property owner', responses: { 201: { description: 'Created' }, 409: { description: 'Duplicate inquiry' } } }
+        post: {
+          tags: ['Inquiries'],
+          security: [{ bearerAuth: [] }],
+          summary: 'Contact property owner',
+          parameters: [{ name: 'propertyId', in: 'path', required: true, schema: { type: 'integer' } }],
+          responses: { 201: { description: 'Created' }, 409: { description: 'Duplicate inquiry' } }
+        }
       },
       '/api/inquiries/mine': {
         get: { tags: ['Inquiries'], security: [{ bearerAuth: [] }], summary: 'View inquiries for my listings', responses: { 200: { description: 'Inquiries' } } }

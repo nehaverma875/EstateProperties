@@ -57,13 +57,13 @@ export default function HomeClient({ initialData }) {
   }
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-6">
-      <div className="mb-6 grid gap-4 border-b border-line pb-5 lg:grid-cols-[1fr_auto] lg:items-end">
+    <section className="mx-auto flex h-[calc(100dvh-4rem)] max-w-7xl flex-col px-3 sm:px-4">
+      <div className="shrink-0 grid gap-3 border-b border-line py-3 sm:gap-4 sm:py-5 lg:grid-cols-[1fr_auto] lg:items-end">
         <div>
-          <h1 className="text-3xl font-bold md:text-4xl">Find verified homes faster</h1>
-          <p className="mt-2 max-w-2xl text-ink/65">Search 50,000+ ready listings with indexed filters, stable cursor pagination, and owner inquiry protection.</p>
+          <h1 className="text-2xl font-bold sm:text-3xl md:text-4xl">Find verified homes faster</h1>
+          <p className="mt-1 max-w-2xl text-sm text-ink/65 sm:mt-2 sm:text-base">Search 50,000+ ready listings with indexed filters, stable cursor pagination, and owner inquiry protection.</p>
         </div>
-        <div className="grid gap-3 rounded-md border border-line bg-white p-3 shadow-soft md:grid-cols-4 lg:min-w-[760px]">
+        <div className="grid gap-2 rounded-md border border-line bg-white p-2 shadow-soft sm:gap-3 sm:p-3 md:grid-cols-4 lg:min-w-[760px]">
           <label className="relative md:col-span-2">
             <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink/45" size={17} />
             <input className="field-leading-icon" name="q" placeholder="City, location, title" aria-label="Search by city, location, or title" value={searchText} onChange={updateSearch} />
@@ -85,26 +85,29 @@ export default function HomeClient({ initialData }) {
           <input className="field" name="minBudget" type="number" placeholder="Min budget" aria-label="Minimum budget" onChange={update} />
           <input className="field" name="maxBudget" type="number" placeholder="Max budget" aria-label="Maximum budget" onChange={update} />
           <input className="field" name="bedrooms" type="number" placeholder="Bedrooms" aria-label="Bedrooms" onChange={update} />
-          <div className="flex items-center gap-2 text-sm font-semibold text-ink/60"><SlidersHorizontal size={16} /> Filters</div>
+          <div className="hidden items-center gap-2 text-sm font-semibold text-ink/60 md:flex"><SlidersHorizontal size={16} /> Filters</div>
         </div>
       </div>
 
-      {isError && <p className="rounded-md border border-coral/40 bg-coral/10 p-4 text-coral">{getApiErrorMessage(error, 'Could not load properties.')}</p>}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {(data?.items || []).map((property, index) => <PropertyCard key={property.id} property={property} priority={index === 0} />)}
+      <div className="min-h-0 flex-1 overflow-y-auto py-3 pr-1 sm:py-5 sm:pr-2">
+        {isError && <p className="mb-4 rounded-md border border-coral/40 bg-coral/10 p-4 text-coral">{getApiErrorMessage(error, 'Could not load properties.')}</p>}
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {(data?.items || []).map((property, index) => <PropertyCard key={property.id} property={property} priority={index === 0} />)}
+        </div>
+        {!isFetching && !data?.items?.length && <p className="rounded-md border border-line bg-white p-6 text-center text-ink/60">No listings match these filters.</p>}
       </div>
-      {!isFetching && !data?.items?.length && <p className="rounded-md border border-line bg-white p-6 text-center text-ink/60">No listings match these filters.</p>}
-      {(pageIndex > 0 || data?.nextCursor) && (
-        <div className="mt-6 flex items-center justify-center gap-3">
-          <button className="btn-ghost" onClick={goToPreviousPage} disabled={isFetching || pageIndex === 0}>
+
+      <div className="shrink-0 border-t border-line bg-mist/70 py-2 sm:py-3">
+        <div className="flex items-center justify-center gap-3">
+          <button className="btn-ghost px-3 sm:px-4" onClick={goToPreviousPage} disabled={isFetching || pageIndex === 0}>
             Previous
           </button>
-          <span className="text-sm font-semibold text-ink/60">Page {pageIndex + 1}</span>
-          <button className="btn-ghost" onClick={goToNextPage} disabled={isFetching || !data?.nextCursor}>
+          <span className="min-w-16 text-center text-sm font-semibold text-ink/60">Page {pageIndex + 1}</span>
+          <button className="btn-ghost px-3 sm:px-4" onClick={goToNextPage} disabled={isFetching || !data?.nextCursor}>
             Next
           </button>
         </div>
-      )}
+      </div>
     </section>
   );
 }

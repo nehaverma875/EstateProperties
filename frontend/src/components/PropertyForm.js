@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 import { ImagePlus, Save, X } from 'lucide-react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { normalizeProperty, propertySchema } from '../features/properties/propertySchemas';
 import { useUploadImageMutation } from '../features/uploads/uploadApi';
 import { getApiErrorMessage } from '../lib/apiError';
@@ -46,7 +46,7 @@ function formValues(property) {
 
 export default function PropertyForm({ initialProperty, onSubmit, loading }) {
   // React Hook Form manages field values and Zod validates them.
-  const { register, handleSubmit, getValues, setValue, watch, formState: { errors } } = useForm({
+  const { register, handleSubmit, getValues, setValue, control, formState: { errors } } = useForm({
     resolver: zodResolver(propertySchema),
     defaultValues: formValues(initialProperty)
   });
@@ -101,7 +101,7 @@ export default function PropertyForm({ initialProperty, onSubmit, loading }) {
   }
 
   // Watch imageUrls so the preview grid updates immediately.
-  const currentImageUrls = watch('imageUrls');
+  const currentImageUrls = useWatch({ control, name: 'imageUrls' });
   const imageUrls = currentImageUrls ? currentImageUrls.split(',').map((item) => item.trim()).filter(Boolean) : [];
 
   return (
