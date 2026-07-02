@@ -5,23 +5,6 @@ export const propertyApi = baseApi.injectEndpoints({
     listProperties: builder.query({
       query: (params) => ({ url: '/properties', params }),
       transformResponse: (response) => response.data,
-      // Keep all cursor pages under the same cache key for the current filter set.
-      serializeQueryArgs: ({ endpointName, queryArgs }) => `${endpointName}-${JSON.stringify({ ...queryArgs, cursor: undefined })}`,
-      merge: (currentCache, newItems, { arg }) => {
-        if (!currentCache.items || !newItems.items) return newItems;
-        // A normal refetch should replace the list; only "Load more" should append.
-        if (!arg?.cursor) {
-          currentCache.items = newItems.items;
-          currentCache.nextCursor = newItems.nextCursor;
-          return;
-        }
-        currentCache.items.push(...newItems.items);
-        currentCache.nextCursor = newItems.nextCursor;
-      },
-      forceRefetch({ currentArg, previousArg }) {
-        // Refetch when search, filters, sorting, or cursor changes.
-        return JSON.stringify(currentArg) !== JSON.stringify(previousArg);
-      },
       providesTags: ['Property']
     }),
     propertyDetail: builder.query({

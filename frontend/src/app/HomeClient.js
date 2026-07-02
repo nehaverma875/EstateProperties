@@ -9,11 +9,12 @@ import { getApiErrorMessage } from '../lib/apiError';
 export default function HomeClient({ initialData }) {
   // Server gives initial listings so the first page has content before JavaScript loads.
   const [filters, setFilters] = useState({ sort: 'newest', limit: 8 });
+  const [pageIndex, setPageIndex] = useState(0);
+  const [pageCursors, setPageCursors] = useState([undefined]);
   const [searchText, setSearchText] = useState('');
-  const [hasInteracted, setHasInteracted] = useState(false);
   // Remove empty values before sending query params to the backend.
   const query = useMemo(() => Object.fromEntries(Object.entries(filters).filter(([, value]) => value !== '')), [filters]);
-  const { data: queriedData, isFetching, isError, error } = useListPropertiesQuery(query, { skip: !hasInteracted });
+  const { data: queriedData, isFetching, isError, error } = useListPropertiesQuery(query);
   const data = queriedData || initialData;
 
   useEffect(() => {
@@ -21,9 +22,10 @@ export default function HomeClient({ initialData }) {
     const timeout = setTimeout(() => {
       setFilters((current) => {
         if ((current.q || '') === searchText) return current;
+        setPageIndex(0);
+        setPageCursors([undefined]);
         return { ...current, q: searchText, cursor: undefined };
       });
-      if (searchText) setHasInteracted(true);
     }, 300);
 
     return () => clearTimeout(timeout);
@@ -31,7 +33,8 @@ export default function HomeClient({ initialData }) {
 
   function update(event) {
     // Reset cursor when filters change so search starts from page one.
-    setHasInteracted(true);
+    setPageIndex(0);
+    setPageCursors([undefined]);
     setFilters((current) => ({ ...current, [event.target.name]: event.target.value, cursor: undefined }));
   }
 
@@ -40,9 +43,16 @@ export default function HomeClient({ initialData }) {
     setSearchText(event.target.value);
   }
 
-  function loadMore() {
-    // Setting cursor loads the next page from the backend.
-    setHasInteracted(true);
+  function goToPreviousPage() {
+    const previousIndex = pageIndex - 1;
+    setPageIndex(previousIndex);
+    setFilters((current) => ({ ...current, cursor: pageCursors[previousIndex] }));
+  }
+
+  function goToNextPage() {
+    const nextIndex = pageIndex + 1;
+    setPageIndex(nextIndex);
+    setPageCursors((current) => [...current.slice(0, nextIndex), data.nextCursor]);
     setFilters((current) => ({ ...current, cursor: data.nextCursor }));
   }
 
@@ -84,10 +94,14 @@ export default function HomeClient({ initialData }) {
         {(data?.items || []).map((property, index) => <PropertyCard key={property.id} property={property} priority={index === 0} />)}
       </div>
       {!isFetching && !data?.items?.length && <p className="rounded-md border border-line bg-white p-6 text-center text-ink/60">No listings match these filters.</p>}
-      {data?.nextCursor && (
-        <div className="mt-6 flex justify-center">
-          <button className="btn-ghost" onClick={loadMore} disabled={isFetching}>
-            {isFetching ? 'Loading...' : 'Load more'}
+      {(pageIndex > 0 || data?.nextCursor) && (
+        <div className="mt-6 flex items-center justify-center gap-3">
+          <button className="btn-ghost" onClick={goToPreviousPage} disabled={isFetching || pageIndex === 0}>
+            Previous
+          </button>
+          <span className="text-sm font-semibold text-ink/60">Page {pageIndex + 1}</span>
+          <button className="btn-ghost" onClick={goToNextPage} disabled={isFetching || !data?.nextCursor}>
+            Next
           </button>
         </div>
       )}
