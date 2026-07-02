@@ -4,8 +4,8 @@ import { v2 as cloudinary } from 'cloudinary';
 import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { env } from '../config/env.js';
-import { HttpError } from '../utils/httpError.js';
+import { env } from '../../config/env.js';
+import { HttpError } from '../../utils/httpError.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const uploadsDir = path.resolve(__dirname, '../../uploads');

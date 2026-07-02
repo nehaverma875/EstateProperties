@@ -60,8 +60,8 @@ export default function HomeClient({ initialData }) {
     <section className="mx-auto flex h-full max-w-7xl flex-col px-3 sm:px-4">
       <div className="shrink-0 grid gap-3 border-b border-line py-3 sm:gap-4 sm:py-5 lg:grid-cols-[1fr_auto] lg:items-end">
         <div>
-          <h1 className="text-2xl font-bold sm:text-3xl md:text-4xl">Find verified homes faster</h1>
-          <p className="mt-1 hidden max-w-2xl text-sm text-ink/65 sm:mt-2 sm:block sm:text-base">Search 50,000+ ready listings with indexed filters, stable cursor pagination, and owner inquiry protection.</p>
+          <h1 className="text-2xl font-bold sm:text-3xl md:text-4xl">Find verified properties faster</h1>
+          <p className="mt-1 hidden max-w-2xl text-sm text-ink/65 sm:mt-2 sm:block sm:text-base">Search listings with indexed filters, cursor pagination, owner inquiries, and similar property recommendations.</p>
         </div>
         <div className="grid grid-cols-2 gap-2 rounded-md border border-line bg-white p-2 shadow-soft sm:gap-3 sm:p-3 md:grid-cols-4 lg:min-w-[760px]">
           <label className="relative col-span-2 md:col-span-2">

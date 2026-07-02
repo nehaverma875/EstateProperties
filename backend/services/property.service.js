@@ -1,4 +1,4 @@
-import { prisma } from '../db/prisma.js';
+import { prisma } from '../config/dbConn.js';
 import { HttpError } from '../utils/httpError.js';
 
 const ownerSelect = { id: true, name: true, email: true, phone: true };

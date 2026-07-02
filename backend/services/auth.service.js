@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import { env } from '../config/env.js';
-import { prisma } from '../db/prisma.js';
+import { prisma } from '../config/dbConn.js';
 import { HttpError } from '../utils/httpError.js';
 
 function hashToken(token) {

@@ -1,6 +1,6 @@
 import express from 'express';
-import { createPropertyController, deletePropertyController, getPropertyController, listPropertiesController, updatePropertyController } from '../controllers/property.controller.js';
-import { authenticate } from '../middleware/authenticate.js';
+import { createPropertyController, deletePropertyController, getPropertyController, listPropertiesController, updatePropertyController } from '../controllers/propertyController.js';
+import { authenticate } from '../middleware/verifyJWT.js';
 import { validate } from '../middleware/validate.js';
 import { createPropertySchema, propertyIdSchema, searchPropertiesSchema, updatePropertySchema } from '../schemas/property.schemas.js';
 

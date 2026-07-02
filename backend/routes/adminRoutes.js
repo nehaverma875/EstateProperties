@@ -1,8 +1,8 @@
 import express from 'express';
 import { z } from 'zod';
-import { adminDeletePropertyController, deleteUserController, listAdminPropertiesController, listUsersController, updateUserRoleController } from '../controllers/admin.controller.js';
-import { authenticate } from '../middleware/authenticate.js';
-import { authorizeAdmin } from '../middleware/authorizeAdmin.js';
+import { adminDeletePropertyController, deleteUserController, listAdminPropertiesController, listUsersController, updateUserRoleController } from '../controllers/adminController.js';
+import { authenticate } from '../middleware/verifyJWT.js';
+import { authorizeAdmin } from '../middleware/verifyRoles.js';
 import { validate } from '../middleware/validate.js';
 
 export const adminRouter = express.Router();

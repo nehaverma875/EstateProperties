@@ -2,12 +2,12 @@
   "name": "real-estate-platform-backend",
   "version": "1.0.0",
   "type": "module",
-  "main": "src/server.js",
+  "main": "server.js",
   "scripts": {
     "postinstall": "prisma generate",
     "prisma:generate": "prisma generate",
-    "dev": "nodemon src/server.js",
-    "start": "node src/server.js",
+    "dev": "nodemon server.js",
+    "start": "node server.js",
     "migrate": "prisma migrate dev",
     "migrate:deploy": "prisma migrate deploy"
   },

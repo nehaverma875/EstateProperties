@@ -1,7 +1,7 @@
 import express from 'express';
-import { uploadImageController } from '../controllers/upload.controller.js';
-import { authenticate } from '../middleware/authenticate.js';
-import { uploadImage } from '../services/upload.service.js';
+import { uploadImageController } from '../controllers/uploadController.js';
+import { authenticate } from '../middleware/verifyJWT.js';
+import { uploadImage } from '../services/cloudinary/uploadService.js';
 
 export const uploadRouter = express.Router();
 

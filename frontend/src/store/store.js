@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import authReducer from '../features/auth/authSlice';
 import { baseApi } from './baseApi';
 
+// One Redux store is shared by the whole frontend.
 export const store = configureStore({
   // Combine normal Redux auth state with RTK Query API cache.
   reducer: {

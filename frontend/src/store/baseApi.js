@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { API_URL } from '../lib/config';
 
 const baseQuery = fetchBaseQuery({
+  // All backend APIs start with this base URL.
   baseUrl: `${API_URL}/api`,
   prepareHeaders: (headers, { getState }) => {
     // Automatically attach JWT access token to every API request when logged in.

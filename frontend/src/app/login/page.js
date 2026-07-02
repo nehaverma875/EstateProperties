@@ -53,12 +53,13 @@ export default function LoginPage() {
           <h1 className="text-2xl font-bold">{mode === 'login' ? 'Login' : 'Create account'}</h1>
           <p className="mt-1 text-sm text-ink/60">Manage listings and contact verified owners.</p>
         </div>
-        {mode === 'register' && <Field placeholder="Name" error={errors.name?.message} {...registerField('name')} />}
-        <Field placeholder="Email" type="email" error={errors.email?.message} {...registerField('email')} />
-        {mode === 'register' && <Field placeholder="Phone" error={errors.phone?.message} {...registerField('phone')} />}
+        {mode === 'register' && <Field placeholder="Name" autoComplete="name" error={errors.name?.message} {...registerField('name')} />}
+        <Field placeholder="Email" type="email" autoComplete="email" error={errors.email?.message} {...registerField('email')} />
+        {mode === 'register' && <Field placeholder="Phone" autoComplete="tel" error={errors.phone?.message} {...registerField('phone')} />}
         <PasswordField
           placeholder="Password"
           type={showPassword ? 'text' : 'password'}
+          autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
           error={errors.password?.message}
           isVisible={showPassword}
           onToggle={() => setShowPassword((current) => !current)}

@@ -6,5 +6,7 @@ export function authorizeAdmin(req, res, next) {
     next(new HttpError(403, 'Admin access required'));
     return;
   }
+
+  // If role is ADMIN, request can move to the admin controller.
   next();
 }

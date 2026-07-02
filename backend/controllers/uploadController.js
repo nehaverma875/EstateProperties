@@ -1,4 +1,4 @@
-import { getUploadedImageUrl } from '../services/upload.service.js';
+import { getUploadedImageUrl } from '../services/cloudinary/uploadService.js';
 import { successResponse } from '../utils/response.js';
 
 export async function uploadImageController(req, res, next) {

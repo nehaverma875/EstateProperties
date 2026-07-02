@@ -1,6 +1,7 @@
 import './globals.css';
 import Providers from '../store/Providers';
 import Header from '../components/Header';
+import WebVitals from '../components/WebVitals';
 
 export const metadata = {
   // Default SEO metadata for pages that do not define their own metadata.
@@ -17,6 +18,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body suppressHydrationWarning>
         <Providers>
+          <WebVitals />
           <Header />
           <main className="h-[calc(100dvh-4rem)] overflow-hidden">{children}</main>
         </Providers>

@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client';
-import { prisma } from '../db/prisma.js';
+import { prisma } from '../config/dbConn.js';
 import { HttpError } from '../utils/httpError.js';
 
 function inquiryDto(inquiry) {

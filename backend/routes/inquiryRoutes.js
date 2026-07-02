@@ -1,7 +1,7 @@
 import express from 'express';
 import { createRateLimiter } from '../config/rateLimit.js';
-import { createInquiryController, listMyInquiriesController } from '../controllers/inquiry.controller.js';
-import { authenticate } from '../middleware/authenticate.js';
+import { createInquiryController, listMyInquiriesController } from '../controllers/inquiryController.js';
+import { authenticate } from '../middleware/verifyJWT.js';
 import { validate } from '../middleware/validate.js';
 import { createInquirySchema } from '../schemas/inquiry.schemas.js';
 
