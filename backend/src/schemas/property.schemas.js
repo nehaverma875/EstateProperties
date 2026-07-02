@@ -2,9 +2,11 @@ import { z } from 'zod';
 
 const propertyType = z.enum(['apartment', 'villa', 'plot', 'independent-house', 'studio', 'commercial']);
 const listingType = z.enum(['sale', 'rent']);
+const imageUrls = z.array(z.string().url()).max(12);
+const amenities = z.array(z.string().trim().min(1).max(60)).max(30);
 
 // Shared property body rules used by create and update APIs.
-const propertyBody = z.object({
+const propertyBodyShape = {
   title: z.string().trim().min(8).max(180),
   description: z.string().trim().min(20).max(5000),
   city: z.string().trim().min(2).max(80),
@@ -16,20 +18,38 @@ const propertyBody = z.object({
   bedrooms: z.coerce.number().int().min(0).max(20),
   bathrooms: z.coerce.number().int().min(0).max(20),
   areaSqft: z.coerce.number().int().positive().max(1000000),
-  imageUrls: z.array(z.string().url()).max(12).default([]),
-  amenities: z.array(z.string().trim().min(1).max(60)).max(30).default([])
-});
+  imageUrls: imageUrls.optional(),
+  amenities: amenities.optional(),
+  // Accept the single URL returned by the upload API and normalize it below.
+  url: z.string().url().optional()
+};
+
+function normalizePropertyBody(body, { withDefaults = false } = {}) {
+  const { url, ...data } = body;
+  if (data.imageUrls === undefined && url) data.imageUrls = [url];
+  if (withDefaults) {
+    if (data.imageUrls === undefined) data.imageUrls = [];
+    if (data.amenities === undefined) data.amenities = [];
+  }
+  return data;
+}
+
+const createPropertyBody = z.object(propertyBodyShape).transform((body) => normalizePropertyBody(body, { withDefaults: true }));
+const updatePropertyBody = z.object(propertyBodyShape)
+  .partial()
+  .refine((value) => Object.keys(value).length > 0, 'At least one field is required')
+  .transform((body) => normalizePropertyBody(body));
 
 export const createPropertySchema = z.object({
   // Create requires the full property body.
-  body: propertyBody,
+  body: createPropertyBody,
   query: z.object({}).passthrough(),
   params: z.object({})
 });
 
 export const updatePropertySchema = z.object({
   // Update allows partial fields but requires at least one field.
-  body: propertyBody.partial().refine((value) => Object.keys(value).length > 0, 'At least one field is required'),
+  body: updatePropertyBody,
   query: z.object({}).passthrough(),
   params: z.object({ id: z.coerce.number().int().positive() })
 });

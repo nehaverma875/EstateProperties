@@ -96,6 +96,7 @@ export const swaggerSpec = swaggerJSDoc({
             bathrooms: { type: 'integer' },
             areaSqft: { type: 'integer' },
             imageUrls: { type: 'array', items: { type: 'string', format: 'uri' } },
+            url: { type: 'string', format: 'uri', description: 'Optional single uploaded image URL; backend normalizes it into imageUrls.' },
             amenities: { type: 'array', items: { type: 'string' } }
           }
         },
